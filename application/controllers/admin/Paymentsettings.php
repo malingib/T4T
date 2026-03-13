@@ -281,30 +281,31 @@ class Paymentsettings extends Admin_Controller
         }
     }
 
-    public function pesapal()
+    public function mpesa()
     {
         $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_rules('pesapal_consumer_key', $this->lang->line('consumer_key'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('pesapal_consumer_secret', $this->lang->line('consumer_secret'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mpesa_key', 'Consumer Key', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mpesa_secret', 'Consumer Secret', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mpesa_passkey', 'Passkey', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mpesa_shortcode', 'Shortcode', 'trim|required|xss_clean');
 
         if ($this->form_validation->run()) {
-
             $data = array(
-                'api_secret_key'      => $this->input->post('pesapal_consumer_secret'),
-                'api_publishable_key' => $this->input->post('pesapal_consumer_key'),
-                'payment_type'        => 'pesapal',
+                'api_publishable_key' => $this->input->post('mpesa_key'),
+                'api_secret_key'      => $this->input->post('mpesa_secret'),
+                'api_password'        => $this->input->post('mpesa_passkey'),
+                'api_signature'       => $this->input->post('mpesa_shortcode'),
+                'payment_type'        => 'mpesa',
             );
-
             $this->paymentsetting_model->add($data);
-
             echo json_encode(array('st' => 0, 'msg' => $this->lang->line('update_message')));
         } else {
-
             $data = array(
-                'pesapal_consumer_key'    => form_error('pesapal_consumer_key'),
-                'pesapal_consumer_secret' => form_error('pesapal_consumer_secret'),
+                'mpesa_key'       => form_error('mpesa_key'),
+                'mpesa_secret'    => form_error('mpesa_secret'),
+                'mpesa_passkey'   => form_error('mpesa_passkey'),
+                'mpesa_shortcode' => form_error('mpesa_shortcode'),
             );
-
             echo json_encode(array('st' => 1, 'msg' => $data));
         }
     }

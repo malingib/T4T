@@ -269,4 +269,101 @@ class Mpesa_lib {
 		
 		return json_decode($response, true);
     }
+
+    /**
+     * @param $phone The MSISDN receiving the funds.
+     * @param $amount The amount to be transacted.
+     * @param $remarks Remarks
+     * @param $occassion Occassion
+     *
+     * @return array Response
+     */
+    public function payout($phone, $amount, $remarks = 'Payout', $occassion = 'Benefit Payout')
+    {
+        $token      = $this->token();
+        $phone      = (substr($phone, 0,1) == '+') ? str_replace('+', '', $phone) : $phone;
+        $phone      = (substr($phone, 0,1) == '0') ? preg_replace('/^0/', '254', $phone) : $phone;
+
+        $endpoint   = ($this->config->env == 'live')
+            ? 'https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest'
+            : 'https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest';
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $endpoint);
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type:application/json',
+                'Authorization:Bearer '.$token
+            )
+        );
+        $curl_post_data = array(
+            'InitiatorName' => 'Initiator', // Should be configured
+            'SecurityCredential' => 'Credential', // Should be encrypted
+            'CommandID' => 'BusinessPayment',
+            'Amount' => round($amount),
+            'PartyA' => $this->config->shortcode,
+            'PartyB' => $phone,
+            'Remarks' => $remarks,
+            'QueueTimeOutURL' => $this->config->timeout_url,
+            'ResultURL' => $this->config->results_url,
+            'Occassion' => $occassion
+        );
+        $data_string = json_encode($curl_post_data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        $response = curl_exec($curl);
+
+        return json_decode($response, true);
+    }
+
+    /**
+     * @param $transaction_id Transaction ID to reverse.
+     * @param $amount Amount to reverse.
+     * @param $receiver Party receiving the reversal.
+     *
+     * @return array Response
+     */
+    public function reverse($transaction_id, $amount, $receiver)
+    {
+        $token      = $this->token();
+        $endpoint   = ($this->config->env == 'live')
+            ? 'https://api.safaricom.co.ke/mpesa/reversal/v1/request'
+            : 'https://sandbox.safaricom.co.ke/mpesa/reversal/v1/request';
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $endpoint);
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type:application/json',
+                'Authorization:Bearer '.$token
+            )
+        );
+        $curl_post_data = array(
+            'Initiator' => 'Initiator',
+            'SecurityCredential' => 'Credential',
+            'CommandID' => 'TransactionReversal',
+            'TransactionID' => $transaction_id,
+            'Amount' => round($amount),
+            'ReceiverParty' => $receiver,
+            'RecieverIdentifierType' => '1',
+            'Remarks' => 'Reversal',
+            'QueueTimeOutURL' => $this->config->timeout_url,
+            'ResultURL' => $this->config->results_url,
+            'Occassion' => 'Correction'
+        );
+        $data_string = json_encode($curl_post_data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        $response = curl_exec($curl);
+
+        return json_decode($response, true);
+    }
 }

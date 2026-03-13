@@ -379,6 +379,8 @@ class User extends Student_Controller
 
     public function dashboard()
     {
+        $this->load->model('wallet_model');
+        $this->load->model('case_model');
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
         $session_year_detail   = sessionYearDetails($this->sch_setting_detail->session, $this->sch_setting_detail->start_month);
    
@@ -511,6 +513,9 @@ class User extends Student_Controller
         
         $data['teacherlist']         = $teachers;        
         
+        $data['wallet_balance'] = $this->wallet_model->get_balance($student_id);
+        $data['active_cases'] = $this->case_model->get(); // Simplified for now
+
         $this->load->view('layout/student/header', $data);
         $this->load->view('user/dashboard', $data);
         $this->load->view('layout/student/footer', $data);
