@@ -227,15 +227,13 @@ class Payment extends Studentgateway_Controller
                         $this->session->set_userdata("params", $params);
                         redirect(base_url("user/gateway/midtrans"));
                     }
-                } else if ($pay_method->payment_type == "pesapal") {
-                    if ($pay_method->api_secret_key == "") {
-                        $this->session->set_flashdata('error', '<div class="alert alert-danger">' . $this->lang->line('pesapal_settings_not_available') . '</div>');
+                } else if ($pay_method->payment_type == "mpesa") {
+                    if ($pay_method->api_publishable_key == "") {
+                        $this->session->set_flashdata('error', '<div class="alert alert-danger">M-Pesa settings not available</div>');
                         redirect($_SERVER['HTTP_REFERER']);
-
                     } else {
-
                         $this->session->set_userdata("params", $params);
-                        redirect(base_url("user/gateway/pesapal"));
+                        redirect(base_url("user/gateway/mpesa"));
                     }
 
                 } else if ($pay_method->payment_type == "flutterwave") {
@@ -647,13 +645,13 @@ class Payment extends Studentgateway_Controller
                             $this->session->set_userdata("params", $params);
                             redirect(base_url("user/gateway/midtrans"));
                         }
-                    } else if ($pay_method->payment_type == "pesapal") {
-                        if ($pay_method->api_secret_key == "") {
-                            $this->session->set_flashdata('error', '<div class="alert alert-danger">' . $this->lang->line('pesapal_settings_not_available') . '</div>');
+                    } else if ($pay_method->payment_type == "mpesa") {
+                        if ($pay_method->api_publishable_key == "") {
+                            $this->session->set_flashdata('error', '<div class="alert alert-danger">M-Pesa settings not available</div>');
                             redirect($_SERVER['HTTP_REFERER']);
                         } else {
                             $this->session->set_userdata("params", $params);
-                            redirect(base_url("user/gateway/pesapal"));
+                            redirect(base_url("user/gateway/mpesa"));
                         }
                     } else if ($pay_method->payment_type == "flutterwave") {
                         if ($pay_method->api_publishable_key == "") {

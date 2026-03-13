@@ -17,7 +17,7 @@
                         <li><a href="#tab_7" data-toggle="tab"><?php echo $this->lang->line('razorpay'); ?></a></li>
                         <li><a href="#tab_8" data-toggle="tab"><?php echo $this->lang->line('paytm'); ?></a></li>
                         <li><a href="#tab_9" data-toggle="tab"><?php echo $this->lang->line('midtrans'); ?></a></li>
-                        <li><a href="#tab_10" data-toggle="tab"><?php echo $this->lang->line('pesapal'); ?></a></li>
+                        <li><a href="#tab_10" data-toggle="tab">M-Pesa Daraja</a></li>
                         <li><a href="#tab_11" data-toggle="tab"><?php echo $this->lang->line('flutter_wave'); ?> </a></li>
                         <li><a href="#tab_12" data-toggle="tab"><?php echo $this->lang->line('ipay_africa'); ?></a></li>
                         <li><a href="#tab_13" data-toggle="tab"><?php echo $this->lang->line('jazzcash'); ?></a></li>
@@ -474,45 +474,54 @@ $midtrans_result = check_in_array('midtrans', $paymentlist);
                         </div>
 
                         <div class="tab-pane " id="tab_10">
-                            <form role="form" id="pesapal" action="<?php echo site_url('admin/paymentsettings/pesapal') ?>" class="form-horizontal" method="post">
+                            <form role="form" id="mpesa" action="<?php echo site_url('admin/paymentsettings/mpesa') ?>" class="form-horizontal" method="post">
                                 <div class="box-body">
                                     <div class="row">
                                             <div class="col-md-7">
                                                 <?php
-$pesapal_result = check_in_array('pesapal', $paymentlist);
+$mpesa_result = check_in_array('mpesa', $paymentlist);
 ?>
-
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12" for="exampleInputEmail1">
-                                                       <?php echo $this->lang->line('consumer_key'); ?>
-                                                    <small class="req"> *</small></label>
+                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12">Consumer Key<small class="req"> *</small></label>
                                                     <div class="col-md-7 col-sm-7 col-xs-12">
-                                                        <input  name="pesapal_consumer_key" placeholder="" type="text" class="form-control col-md-7 col-xs-12"  value="<?php echo isset($pesapal_result->api_publishable_key) ? $pesapal_result->api_publishable_key : ""; ?>" />
-                                                        <span class=" text text-danger pesapal_consumer_key_error"></span>
-                                                    </div>  </div>
-                                                    <div class="form-group">
-                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12" for="exampleInputEmail1">
-                                                       <?php echo $this->lang->line('consumer_secret'); ?>
-                                                    <small class="req"> *</small></label>
+                                                        <input name="mpesa_key" type="text" class="form-control" value="<?php echo isset($mpesa_result->api_publishable_key) ? $mpesa_result->api_publishable_key : ""; ?>" />
+                                                        <span class="text text-danger mpesa_key_error"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12">Consumer Secret<small class="req"> *</small></label>
                                                     <div class="col-md-7 col-sm-7 col-xs-12">
-                                                        <input  name="pesapal_consumer_secret" placeholder="" type="text" class="form-control col-md-7 col-xs-12"  value="<?php echo isset($pesapal_result->api_secret_key) ? $pesapal_result->api_secret_key : ""; ?>" />
-                                                        <span class=" text text-danger pesapal_consumer_secret_error"></span>
+                                                        <input name="mpesa_secret" type="text" class="form-control" value="<?php echo isset($mpesa_result->api_secret_key) ? $mpesa_result->api_secret_key : ""; ?>" />
+                                                        <span class="text text-danger mpesa_secret_error"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12">Passkey<small class="req"> *</small></label>
+                                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                                        <input name="mpesa_passkey" type="text" class="form-control" value="<?php echo isset($mpesa_result->api_password) ? $mpesa_result->api_password : ""; ?>" />
+                                                        <span class="text text-danger mpesa_passkey_error"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-5 col-sm-12 col-xs-12">Shortcode<small class="req"> *</small></label>
+                                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                                        <input name="mpesa_shortcode" type="text" class="form-control" value="<?php echo isset($mpesa_result->api_signature) ? $mpesa_result->api_signature : ""; ?>" />
+                                                        <span class="text text-danger mpesa_shortcode_error"></span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-5 text text-center disblock">
-                                                <a href="https://www.pesapal.com/" target="_blank">
-                                                    <h5><?php echo $this->lang->line('payment_gateway_for_afirican_countries'); ?></h5>
-                                                    <img src="<?php echo base_url(); ?>/backend/images/pesapal.jpg<?php echo img_time(); ?>" width="200"><p>https://www.pesapal.com/</p></a>
+                                                <a href="https://developer.safaricom.co.ke/" target="_blank">
+                                                    <h5>M-Pesa Daraja API</h5>
+                                                    <img src="<?php echo base_url(); ?>/backend/images/mpesa.png" width="200"><p>https://developer.safaricom.co.ke/</p></a>
                                             </div>
                                     </div>
                                 </div>
-                                <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                             <?php if ($this->rbac->hasPrivilege('payment_methods', 'can_edit')) {?>
-                                            <button type="submit" class="btn btn-primary midtrans_save" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save'); ?>"><?php echo $this->lang->line('save'); ?></button>
+                                            <button type="submit" class="btn btn-primary mpesa_save" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save'); ?>"><?php echo $this->lang->line('save'); ?></button>
                                             <?php }?>
                                         </div>
                                     </div>
@@ -1307,12 +1316,12 @@ if ($radio_check == 'midtrans') {
                                 </div>
                                   <div class="radio">
                                     <label>
-                                        <input type="radio"  name="payment_setting" value="pesapal" <?php
-if ($radio_check == 'pesapal') {
+                                        <input type="radio"  name="payment_setting" value="mpesa" <?php
+if ($radio_check == 'mpesa') {
     echo "checked";
 }
 ?>>
-                                        <?php echo $this->lang->line('pesapal'); ?>
+                                        M-Pesa
                                     </label>
                                 </div>
                                  <div class="radio">
@@ -1839,16 +1848,16 @@ function check_in_array($find, $array)
         e.preventDefault();
     });
 
-    $("#pesapal").submit(function (e) {
+    $("#mpesa").submit(function (e) {
         $("[class$='_error']").html("");
-        var $this = $(".pesapal_save");
+        var $this = $(".mpesa_save");
         $this.button('loading');
         var url = $(this).attr('action');
         $.ajax({
             type: "POST",
             dataType: 'JSON',
             url: url,
-            data: $("#pesapal").serialize(),
+            data: $("#mpesa").serialize(),
             success: function (data, textStatus, jqXHR)
             {
                 if (data.st === 1) {
